@@ -5,6 +5,8 @@
 
 #include "BigInteger.hpp"
 
+using namespace std;
+
 
 BigInteger::BigInteger() {
     m_number = new uint8_t[4]();
@@ -107,14 +109,14 @@ BigInteger BigInteger::operator+(unsigned int value){
     return result;
 }
 
-BigInteger BigInteger::operator+=(const BigInteger &rhs){
+BigInteger BigInteger::operator+=(const BigInteger &rhs) {
     BigInteger result;
-    unsigned int length = (this->m_digitCount > rhs.m_digitCount) ? this->m_digitCount : rhs.m_digitCount;
+    unsigned int length = max(m_digitCount, rhs.m_digitCount);
 
     int carry = 0;
     for (unsigned int digit = 0; digit < length; digit++)
     {
-        int v1 = this->getDigit(digit);
+        int v1 = getDigit(digit);
         int v2 = rhs.getDigit(digit);
         int sum = v1 + v2 + carry;
         int single = sum % 10;
@@ -127,7 +129,9 @@ BigInteger BigInteger::operator+=(const BigInteger &rhs){
         result.setDigit(length, carry);
     }
 
-    return result;
+    makeCopy(result);
+
+    return *this;
 }
 
 BigInteger BigInteger::operator++(int value){
@@ -228,13 +232,7 @@ BigInteger::operator double() const {
     return number;
 }
 
-//double doubleConverter(){
-//    double number = 0;
-//    for (int i = 0; i < m_digitCount; i++) {
-//        number += m_number[i] * pow(10,i);
-//    }
-//    return number;
-//}
+
 
 //BigInteger BigInteger::add(const BigInteger& rhs) {
 //	BigInteger result;
@@ -314,7 +312,7 @@ std::uint8_t BigInteger::getDigit(unsigned int position) const {
 
 void BigInteger::setDigit(unsigned int position, std::uint8_t digit) {
     if (position >= m_sizeReserved) {
-        while (m_sizeReserved < position){
+        while (m_sizeReserved < position) {
             m_sizeReserved = m_sizeReserved * 2;
         }
         std::uint8_t* temp = new uint8_t[m_sizeReserved];
