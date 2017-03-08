@@ -60,7 +60,9 @@ BigInteger::~BigInteger() {
 }
 
 void BigInteger::makeCopy(const BigInteger &first) {
-    makeCopy(first);
+    m_digitCount = first.m_digitCount;
+    m_sizeReserved = first.m_sizeReserved;
+    m_number = first.m_number;
 }
 
 BigInteger BigInteger::operator=(const BigInteger &first) {
@@ -74,10 +76,7 @@ BigInteger BigInteger::operator=(const BigInteger &first) {
 }
 
 BigInteger::BigInteger(const BigInteger &first) {
-
-    m_digitCount = first.m_digitCount;
-    m_sizeReserved = first.m_sizeReserved;
-    m_number = first.m_number;
+    makeCopy(first);
 }
 
 BigInteger BigInteger::operator+(const BigInteger &rhs){
