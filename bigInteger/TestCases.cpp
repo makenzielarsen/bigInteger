@@ -62,8 +62,8 @@ bool TestCases::testCase2(void)
 {
 	BigInteger i(1234567);
 	
-	return (i.m_number != nullptr) && (i.m_sizeReserved > 0) && (i.m_digitCount == 7) && (i.m_number[6] == 1) && (i.m_number[5] == 2)
-	  && (i.m_number[4] == 3) && (i.m_number[3] == 4) && (i.m_number[2] == 5) && (i.m_number[1] == 6) && (i.m_number[0] == 7);
+	return (i.m_number.get() != nullptr) && (i.m_sizeReserved > 0) && (i.m_digitCount == 7) && (i.m_number.get()[6] == 1) && (i.m_number.get()[5] == 2)
+	  && (i.m_number.get()[4] == 3) && (i.m_number.get()[3] == 4) && (i.m_number.get()[2] == 5) && (i.m_number.get()[1] == 6) && (i.m_number.get()[0] == 7);
 }
 
 bool TestCases::testCase3(void)
@@ -80,7 +80,7 @@ bool TestCases::testCase3(void)
 	{
 		for (int j = 0; j < value.length() && ret; j++)
 		{
-			if (i.m_number[j] != (value[value.length() - 1 - j] - '0'))
+			if (i.m_number.get()[j] != (value[value.length() - 1 - j] - '0'))
 			{
 				ret = false;
 			}
@@ -119,12 +119,12 @@ bool TestCases::testCase4(void)
 	{
 		for (unsigned int j = 0; j < copy.m_sizeReserved && j < i.m_sizeReserved && ret; j++)
 		{
-			if (i.m_number[j] != copy.m_number[j])
+			if (i.m_number.get()[j] != copy.m_number.get()[j])
 			{
 				ret = false;
 				std::cout << "  The m_number[" << j << "] Didn't match" << std::endl;
-				std::cout << "   Expected " << i.m_number[j] << std::endl;
-				std::cout << "   Actual " << copy.m_number[j] << std::endl;
+				std::cout << "   Expected " << i.m_number.get()[j] << std::endl;
+				std::cout << "   Actual " << copy.m_number.get()[j] << std::endl;
 			}
 		}
 	}
@@ -163,12 +163,12 @@ bool TestCases::testCase5(void)
 	{
 		for (unsigned int j = 0; j < copy.m_sizeReserved && j < i.m_sizeReserved && ret; j++)
 		{
-			if (i.m_number[j] != copy.m_number[j])
+			if (i.m_number.get()[j] != copy.m_number.get()[j])
 			{
 				ret = false;
 				std::cout << "  The m_number[" << j << "] Didn't match" << std::endl;
-				std::cout << "   Expected " << i.m_number[j] << std::endl;
-				std::cout << "   Actual " << copy.m_number[j] << std::endl;
+				std::cout << "   Expected " << i.m_number.get()[j] << std::endl;
+				std::cout << "   Actual " << copy.m_number.get()[j] << std::endl;
 			}
 		}
 	}
@@ -420,12 +420,12 @@ bool TestCases::verifyMatch(const BigInteger& rExptected, const BigInteger& rAct
 	{
 		for (unsigned int j = 0; j < rActual.m_digitCount && j < rExptected.m_digitCount && ret; j++)
 		{
-			if (rExptected.m_number[j] != rActual.m_number[j])
+			if (rExptected.m_number.get()[j] != rActual.m_number.get()[j])
 			{
 				ret = false;
 				std::cout << "  The m_number[" << j << "] Didn't match" << std::endl;
-				std::cout << "   Expected " << (int)rExptected.m_number[j] << std::endl;
-				std::cout << "   Actual " << (int)rActual.m_number[j] << std::endl;
+				std::cout << "   Expected " << (int)rExptected.m_number.get()[j] << std::endl;
+				std::cout << "   Actual " << (int)rActual.m_number.get()[j] << std::endl;
 			}
 		}
 	}

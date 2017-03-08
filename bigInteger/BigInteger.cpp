@@ -7,7 +7,8 @@
 
 
 BigInteger::BigInteger() {
-    m_number = new uint8_t[4]();
+    shared_ptr<uint8_t> temp(new uint8_t[4], default_delete<uint8_t[]>());
+    m_number = temp;
     m_sizeReserved = 4;
     m_digitCount = 0;
 }
@@ -27,11 +28,13 @@ int countDigits(int value) {
 BigInteger::BigInteger(int value) {
     if (value == 0) {
         m_sizeReserved = countDigits(value);
-        m_number = new uint8_t[m_sizeReserved];
+        shared_ptr<uint8_t> temp(new uint8_t[m_sizeReserved], default_delete<uint8_t[]>());
+        m_number = temp;
         m_digitCount = 0;
     } else {
         m_sizeReserved = countDigits(value);
-        m_number = new uint8_t[m_sizeReserved];
+        shared_ptr<uint8_t> temp(new uint8_t[m_sizeReserved], default_delete<uint8_t[]>());
+        m_number = temp;
 
         for (int i = 0; i < m_sizeReserved; i++) {
             int digit = value % 10;
@@ -41,10 +44,11 @@ BigInteger::BigInteger(int value) {
     }
 }
 
-BigInteger::BigInteger(std::string s) {
+BigInteger::BigInteger(string s) {
 
     m_sizeReserved = s.length();
-    m_number = new uint8_t[m_sizeReserved]();
+    shared_ptr<uint8_t> temp(new uint8_t[m_sizeReserved], default_delete<uint8_t[]>());
+    m_number = temp;
 
     for (int i = 0; i < m_sizeReserved; i++) {
         int digit = s[m_sizeReserved - 1 - i] - '0';
@@ -53,10 +57,7 @@ BigInteger::BigInteger(std::string s) {
 }
 
 BigInteger::~BigInteger() {
-    if (m_number)
-    {
-        delete[](m_number);
-    }
+
 }
 
 void BigInteger::makeCopy(const BigInteger &first) {
@@ -66,11 +67,6 @@ void BigInteger::makeCopy(const BigInteger &first) {
 }
 
 BigInteger BigInteger::operator=(const BigInteger &first) {
-    if (m_number)
-    {
-        delete[](m_number);
-    }
-
     makeCopy(first);
     return *this;
 }
@@ -131,7 +127,7 @@ BigInteger BigInteger::operator+=(const BigInteger &rhs){
 }
 
 BigInteger BigInteger::operator++(int value){
-    m_number[m_digitCount] += value;
+    m_number.get()[m_digitCount] += value;
     return *this;
 }
 
@@ -200,8 +196,8 @@ bool BigInteger::operator<=(const BigInteger &rhs){
     // Have to go digit by digit
     for (int digit = m_digitCount - 1; digit >= 0; digit--)
     {
-        if (this->m_number[digit] < rhs.m_number[digit]) return true;
-        if (this->m_number[digit] > rhs.m_number[digit]) return false;
+        if (this->m_number.get()[digit] < rhs.m_number.get()[digit]) return true;
+        if (this->m_number.get()[digit] > rhs.m_number.get()[digit]) return false;
     }
     return true;
 }
@@ -213,7 +209,7 @@ bool BigInteger::operator==(const BigInteger &rhs){
         keepGoing = true;
         while (keepGoing) {
             for (int digit = m_digitCount - 1; digit >= 0; digit--) {
-                keepGoing = m_number[digit] == rhs.m_number[digit];
+                keepGoing = m_number.get()[digit] == rhs.m_number.get()[digit];
             }
         }
     }
@@ -223,7 +219,7 @@ bool BigInteger::operator==(const BigInteger &rhs){
 BigInteger::operator double() const {
     double number = 0;
     for (int i = 0; i < m_digitCount; i++) {
-        number += m_number[i] * pow(10,i);
+        number += m_number.get()[i] * pow(10,i);
     }
     return number;
 }
@@ -292,7 +288,7 @@ BigInteger::operator double() const {
 //void BigInteger::display() {
 //	for (unsigned int digit = m_digitCount; digit > 0; digit--)
 //	{
-//		std::cout << static_cast<int>(m_number[digit - 1]);
+//		cout << static_cast<int>(m_number[digit - 1]);
 //	}
 //}
 
@@ -303,36 +299,36 @@ BigInteger::operator double() const {
 //
 // ------------------------------------------------------------------
 
-std::uint8_t BigInteger::getDigit(unsigned int position) const {
+uint8_t BigInteger::getDigit(unsigned int position) const {
 	if (position < m_digitCount)
     {
-		return m_number[position];
+		return m_number.get()[position];
 	}
 
 	return 0;
 }
 
-void BigInteger::setDigit(unsigned int position, std::uint8_t digit) {
+void BigInteger::setDigit(unsigned int position, uint8_t digit) {
     if (position >= m_sizeReserved) {
         while (m_sizeReserved < position){
             m_sizeReserved = m_sizeReserved * 2;
         }
-        std::uint8_t* temp = new uint8_t[m_sizeReserved];
-        std::copy(m_number, m_number + m_digitCount, temp);
+        shared_ptr<uint8_t> temp(new uint8_t[m_sizeReserved], default_delete<uint8_t[]>());
 
-        if (m_number) {
-            delete[](m_number);
+        for (int i = 0; i < m_digitCount; i++) {
+            temp.get()[i] = m_number.get()[i];
         }
+
         m_number = temp;
     }
-    m_number[position] = digit;
+    m_number.get()[position] = digit;
     m_digitCount = position + 1;
 }
 
-std::ostream &operator<<(std::ostream &outputStream, const BigInteger &integer) {
+ostream &operator<<(ostream &outputStream, const BigInteger &integer) {
     for (unsigned int digit = integer.m_digitCount; digit > 0; digit--)
     {
-        outputStream << static_cast<int>(integer.m_number[digit - 1]);
+        outputStream << static_cast<int>(integer.m_number.get()[digit - 1]);
     }
     return outputStream;
 }

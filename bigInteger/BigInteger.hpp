@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 
+using namespace std;
+
 class TestCases;
 
 class BigInteger
@@ -12,7 +14,7 @@ class BigInteger
 public:
     BigInteger();
     BigInteger(int value);
-    BigInteger(std::string value);
+    BigInteger(string value);
     ~BigInteger();
     BigInteger(const BigInteger &first);
     BigInteger operator=(const BigInteger &first);
@@ -27,7 +29,7 @@ public:
 	operator double() const;
 	void makeCopy(const BigInteger &first);
 
-	friend std::ostream &operator<<(std::ostream &os, const BigInteger &integer);
+	friend ostream &operator<<(ostream &os, const BigInteger &integer);
 
 //    BigInteger add(const BigInteger& rhs);
 //	BigInteger multiply(const BigInteger& rhs);
@@ -37,12 +39,12 @@ public:
 	friend class TestCases;
 
 private:
-	std::uint8_t* m_number;		// Internal representation of the number.
+	shared_ptr<uint8_t> m_number;		// Internal representation of the number.
 	unsigned int m_sizeReserved;	// Total size of the allocated space used to internally store the number
 	unsigned int m_digitCount;	// How many digits are in the number.
 
-	std::uint8_t getDigit(unsigned int position) const;
-	void setDigit(unsigned int position, std::uint8_t digit);
+	uint8_t getDigit(unsigned int position) const;
+	void setDigit(unsigned int position, uint8_t digit);
 };
 
 #endif
