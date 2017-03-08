@@ -110,27 +110,8 @@ BigInteger BigInteger::operator+(unsigned int value){
 }
 
 BigInteger& BigInteger::operator+=(const BigInteger &rhs) {
-    BigInteger result;
-    unsigned int length = max(m_digitCount, rhs.m_digitCount);
-
-    int carry = 0;
-    for (unsigned int digit = 0; digit < length; digit++)
-    {
-        int v1 = getDigit(digit);
-        int v2 = rhs.getDigit(digit);
-        int sum = v1 + v2 + carry;
-        int single = sum % 10;
-        carry = ((sum - single) > 0) ? (sum - single) / 10 : 0;
-
-        result.setDigit(digit, single);
-    }
-    if (carry > 0)
-    {
-        result.setDigit(length, carry);
-    }
-
+    BigInteger result = *this + rhs;
     makeCopy(result);
-
     return *this;
 }
 
