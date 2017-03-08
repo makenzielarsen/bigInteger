@@ -109,7 +109,7 @@ BigInteger BigInteger::operator+(unsigned int value){
     return result;
 }
 
-BigInteger BigInteger::operator+=(const BigInteger &rhs) {
+BigInteger& BigInteger::operator+=(const BigInteger &rhs) {
     BigInteger result;
     unsigned int length = max(m_digitCount, rhs.m_digitCount);
 
