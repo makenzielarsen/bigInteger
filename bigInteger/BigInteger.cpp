@@ -116,8 +116,8 @@ BigInteger& BigInteger::operator+=(const BigInteger &rhs) {
     return *this;
 }
 
-BigInteger BigInteger::operator++(int value){
-    *this += BigInteger(value);
+BigInteger BigInteger::operator++(int) {
+    *this += BigInteger(1);
     return *this;
 }
 
@@ -169,17 +169,16 @@ bool BigInteger::operator<=(const BigInteger &rhs){
 }
 
 bool BigInteger::operator==(const BigInteger &rhs){
-    bool keepGoing = false;
+    if (m_digitCount != rhs.m_digitCount) {
+        return false;
+    }
 
-    if (this->m_digitCount == rhs.m_digitCount){
-        keepGoing = true;
-        while (keepGoing) {
-            for (int digit = m_digitCount - 1; digit >= 0; digit--) {
-                keepGoing = m_number[digit] == rhs.m_number[digit];
-            }
+    for (int i = 0; i < m_digitCount; i++) {
+        if (m_number[i] != rhs.m_number[i]) {
+            return false;
         }
     }
-    return keepGoing;
+    return true;
 }
 
 BigInteger::operator double() const {
@@ -201,7 +200,7 @@ std::uint8_t BigInteger::getDigit(unsigned int position) const {
 
 void BigInteger::setDigit(unsigned int position, std::uint8_t digit) {
     if (position >= m_sizeReserved) {
-        while (m_sizeReserved < position) {
+        while (m_sizeReserved <= position) {
             m_sizeReserved = m_sizeReserved * 2;
         }
         std::uint8_t* temp = new uint8_t[m_sizeReserved];
