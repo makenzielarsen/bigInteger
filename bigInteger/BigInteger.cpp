@@ -189,37 +189,6 @@ BigInteger::operator double() const {
     return number;
 }
 
-
-//BigInteger BigInteger::multiply(const BigInteger& rhs) {
-//	BigInteger result;
-//	const BigInteger& b = (this->m_digitCount < rhs.m_digitCount) ? *this : rhs;
-//	const BigInteger& t = (this->m_digitCount < rhs.m_digitCount) ? rhs : *this;
-//
-//	for (unsigned int bDigit = 0; bDigit < b.m_digitCount; bDigit++)
-//	{
-//		BigInteger temp(0);
-//		int v1 = b.getDigit(bDigit);
-//		int carry = 0;
-//		for (unsigned int tDigit = 0; tDigit < t.m_digitCount; tDigit++)
-//		{
-//			int v2 = t.getDigit(tDigit);
-//			int sum = v1 * v2 + carry;
-//			int single = sum % 10;
-//			carry = ((sum - single) > 0) ? (sum - single) / 10 : 0;
-//
-//			temp.setDigit(bDigit + tDigit, single);
-//		}
-//		if (carry > 0)
-//		{
-//			temp.setDigit(bDigit + t.m_digitCount, carry);
-//		}
-//		BigInteger temp2 = result.add(temp);
-//		result = temp2;
-//	}
-//
-//	return result;
-//}
-
 std::uint8_t BigInteger::getDigit(unsigned int position) const {
 	if (position < m_digitCount)
     {
