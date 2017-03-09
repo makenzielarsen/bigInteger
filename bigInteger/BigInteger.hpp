@@ -21,7 +21,7 @@ public:
     BigInteger& operator+=(const BigInteger &rhs);
     BigInteger operator++(int value);
     BigInteger operator*(const BigInteger &first);
-    BigInteger operator*=(const BigInteger &rhs);
+    BigInteger& operator*=(const BigInteger &rhs);
     bool operator<=(const BigInteger &rhs);
     bool operator==(const BigInteger &rhs);
 	operator double() const;

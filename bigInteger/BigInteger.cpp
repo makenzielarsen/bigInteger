@@ -15,7 +15,7 @@ BigInteger::BigInteger() {
     m_digitCount = 0;
 }
 
-int countDigits(int value) {
+unsigned int countDigits(int value) {
     unsigned int number_of_digits = 0;
 
     do {
@@ -28,7 +28,7 @@ int countDigits(int value) {
 
 BigInteger::BigInteger(int value) {
     if (value == 0) {
-        m_sizeReserved = countDigits(value);
+        m_sizeReserved = 4;
         m_number = new uint8_t[m_sizeReserved];
         m_digitCount = 0;
     } else {
@@ -149,40 +149,16 @@ BigInteger BigInteger::operator*(const BigInteger &rhs) {
     return result;
 }
 
-BigInteger BigInteger::operator*=(const BigInteger &rhs) {
-    BigInteger result;
-    const BigInteger& b = (this->m_digitCount < rhs.m_digitCount) ? *this : rhs;
-    const BigInteger& t = (this->m_digitCount < rhs.m_digitCount) ? rhs : *this;
-
-    for (unsigned int bDigit = 0; bDigit < b.m_digitCount; bDigit++)
-    {
-        BigInteger temp(0);
-        int v1 = b.getDigit(bDigit);
-        int carry = 0;
-        for (unsigned int tDigit = 0; tDigit < t.m_digitCount; tDigit++)
-        {
-            int v2 = t.getDigit(tDigit);
-            int sum = v1 * v2 + carry;
-            int single = sum % 10;
-            carry = ((sum - single) > 0) ? (sum - single) / 10 : 0;
-
-            temp.setDigit(bDigit + tDigit, single);
-        }
-        if (carry > 0)
-        {
-            temp.setDigit(bDigit + t.m_digitCount, carry);
-        }
-        result = result + temp;
-    }
-
-    return result;
+BigInteger& BigInteger::operator*=(const BigInteger &rhs) {
+    BigInteger result = *this * rhs;
+    makeCopy(result);
+    return *this;
 }
 
 bool BigInteger::operator<=(const BigInteger &rhs){
     if (this->m_digitCount < rhs.m_digitCount) return true;
     if (this->m_digitCount > rhs.m_digitCount) return false;
-    //
-    // Have to go digit by digit
+
     for (int digit = m_digitCount - 1; digit >= 0; digit--)
     {
         if (this->m_number[digit] < rhs.m_number[digit]) return true;
