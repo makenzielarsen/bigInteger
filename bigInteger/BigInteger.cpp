@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cmath>
 #include <fstream>
+#include <vector>
 
 #include "BigInteger.hpp"
 
@@ -24,7 +25,6 @@ int countDigits(int value) {
 
     return number_of_digits;
 }
-
 
 BigInteger::BigInteger(int value) {
     if (value == 0) {
@@ -105,7 +105,7 @@ BigInteger BigInteger::operator+(const BigInteger &rhs){
 }
 
 BigInteger BigInteger::operator+(unsigned int value){
-    BigInteger result;
+    BigInteger result = BigInteger(value) + *this;
     return result;
 }
 
@@ -214,30 +214,6 @@ BigInteger::operator double() const {
 }
 
 
-
-//BigInteger BigInteger::add(const BigInteger& rhs) {
-//	BigInteger result;
-//	unsigned int length = (this->m_digitCount > rhs.m_digitCount) ? this->m_digitCount : rhs.m_digitCount;
-//
-//	int carry = 0;
-//	for (unsigned int digit = 0; digit < length; digit++)
-//	{
-//		int v1 = this->getDigit(digit);
-//		int v2 = rhs.getDigit(digit);
-//		int sum = v1 + v2 + carry;
-//		int single = sum % 10;
-//		carry = ((sum - single) > 0) ? (sum - single) / 10 : 0;
-//
-//		result.setDigit(digit, single);
-//	}
-//	if (carry > 0)
-//	{
-//		result.setDigit(length, carry);
-//	}
-//
-//	return result;
-//}
-
 //BigInteger BigInteger::multiply(const BigInteger& rhs) {
 //	BigInteger result;
 //	const BigInteger& b = (this->m_digitCount < rhs.m_digitCount) ? *this : rhs;
@@ -267,20 +243,6 @@ BigInteger::operator double() const {
 //
 //	return result;
 //}
-
-//void BigInteger::display() {
-//	for (unsigned int digit = m_digitCount; digit > 0; digit--)
-//	{
-//		std::cout << static_cast<int>(m_number[digit - 1]);
-//	}
-//}
-
-// ------------------------------------------------------------------
-//
-// Returns the digit as the specified positon.  If the position is greater
-// that the number representation, a 0 is returned.
-//
-// ------------------------------------------------------------------
 
 std::uint8_t BigInteger::getDigit(unsigned int position) const {
 	if (position < m_digitCount)
