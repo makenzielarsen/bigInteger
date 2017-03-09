@@ -117,8 +117,9 @@ BigInteger& BigInteger::operator+=(const BigInteger &rhs) {
 }
 
 BigInteger BigInteger::operator++(int) {
+    BigInteger temp = *this;
     *this += BigInteger(1);
-    return *this;
+    return temp;
 }
 
 BigInteger BigInteger::operator*(const BigInteger &rhs) {
