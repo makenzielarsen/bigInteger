@@ -2,3 +2,4 @@
 *.vcxproj
 *.filters
 *.sln
+bigInteger/cmake-build-debug/*

@@ -64,7 +64,8 @@ BigInteger::~BigInteger() {
 void BigInteger::makeCopy(const BigInteger &first) {
     m_digitCount = first.m_digitCount;
     m_sizeReserved = first.m_sizeReserved;
-    m_number = first.m_number;
+    m_number = new uint8_t[m_sizeReserved]();
+    copy(first.m_number, first.m_number + m_digitCount, m_number);
 }
 
 BigInteger BigInteger::operator=(const BigInteger &first) {
@@ -116,7 +117,7 @@ BigInteger& BigInteger::operator+=(const BigInteger &rhs) {
 }
 
 BigInteger BigInteger::operator++(int value){
-    m_number[m_digitCount] += value;
+    *this += BigInteger(value);
     return *this;
 }
 
@@ -143,7 +144,7 @@ BigInteger BigInteger::operator*(const BigInteger &rhs) {
         {
             temp.setDigit(bDigit + t.m_digitCount, carry);
         }
-        result = result + temp;
+        result += temp;
     }
 
     return result;
