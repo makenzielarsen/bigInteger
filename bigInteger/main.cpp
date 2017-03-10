@@ -22,7 +22,6 @@ BigInteger factorial(BigInteger value)
 
 int main()
 {
-    TestCases::runTestCases();
 
 	BigInteger one(1234);
 	BigInteger two(9999);
@@ -57,6 +56,8 @@ int main()
 	{
 		std::cout << "Still work left to do..." << std::endl;
 	}
+
+	TestCases::runTestCases();
 
 	return 0;
 }

@@ -13,6 +13,7 @@ BigInteger::BigInteger() {
     m_number = new uint8_t[4]();
     m_sizeReserved = 4;
     m_digitCount = 0;
+    fill(m_number, m_number + m_sizeReserved, 0);
 }
 
 unsigned int countDigits(int value) {
@@ -31,6 +32,7 @@ BigInteger::BigInteger(int value) {
         m_sizeReserved = 4;
         m_number = new uint8_t[m_sizeReserved];
         m_digitCount = 0;
+        fill(m_number, m_number + m_sizeReserved, 0);
     } else {
         m_sizeReserved = countDigits(value);
         m_number = new uint8_t[m_sizeReserved];
@@ -204,8 +206,9 @@ void BigInteger::setDigit(unsigned int position, std::uint8_t digit) {
         while (m_sizeReserved <= position) {
             m_sizeReserved = m_sizeReserved * 2;
         }
-        std::uint8_t* temp = new uint8_t[m_sizeReserved];
-        std::copy(m_number, m_number + m_digitCount, temp);
+        uint8_t* temp = new uint8_t[m_sizeReserved];
+        fill(temp, temp + m_sizeReserved, 0);
+        copy(m_number, m_number + m_digitCount, temp);
 
         if (m_number) {
             delete[](m_number);
